@@ -1,0 +1,93 @@
+[
+  {
+    "symbolicName": "android",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "066aafa1a95681f4ff7280f162157ffeb2093e84",
+    "jarFileModificationDate": "2014-10-08T19:33:41+08:00",
+    "location": "/Users/bclin087/Documents/android-sdk-macosx/platforms/android-20/android.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "appcompat_v7",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "185949560cd2bb2831508a5c54d3ce8fc3408320",
+    "jarFileModificationDate": "2015-05-16T23:48:28+08:00",
+    "location": "/Users/bclin087/Desktop/Fred/taxi_demo/app/appcompat_v7/bin/appcompat_v7.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "main",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "1d85138c0cf2fd62deaaf49bcb87ae7714d6e1d3",
+    "jarFileModificationDate": "2015-05-17T00:26:50+08:00",
+    "location": "/Users/bclin087/Desktop/Fred/taxi_demo/app/volley/src/main/bin/main.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "android-support-v7-appcompat",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "21297ae2bf22a0ce81c9b59992cf0693eec45d5b",
+    "jarFileModificationDate": "2014-05-17T02:59:39+08:00",
+    "location": "/Users/bclin087/Desktop/Fred/taxi_demo/app/appcompat_v7/libs/android-support-v7-appcompat.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "annotations",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "b41d8d70d216eaa6ce50574a99214fbe8b893e29",
+    "jarFileModificationDate": "2014-05-17T02:59:38+08:00",
+    "location": "/Users/bclin087/Documents/android-sdk-macosx/tools/support/annotations.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "android-support-v4",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "ded9acc6a9792b8f1afc470f0c9cd36d178914cd",
+    "jarFileModificationDate": "2014-05-17T02:59:39+08:00",
+    "location": "/Users/bclin087/Desktop/Fred/taxi_demo/app/appcompat_v7/libs/android-support-v4.jar",
+    "javaRuntime": false
+  },
+  {
+    "symbolicName": "android",
+    "version": {
+      "major": -1,
+      "minor": -1,
+      "micro": -1,
+      "qualifier": ""
+    },
+    "jarFileFingerprint": "2567fcef5bb2ca93e22a9df4f2dbf895daeb3e33",
+    "jarFileModificationDate": "2011-12-10T00:50:39+08:00",
+    "location": "/Users/bclin087/Documents/android-sdk-macosx/platforms/android-8/android.jar",
+    "javaRuntime": false
+  }
+]

@@ -1,0 +1,151 @@
+package com.bclin087.taxidemo;
+
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class UserActivity extends Activity {
+	String mobilePhone;
+	String	curTxnid = "";			// 目前叫車的 transaction ID
+	RequestQueue queue;			// http request queue
+	Handler handler = new Handler();
+	String api_url;
+	boolean isCallingCab;
+	int timeout_counter;
+	
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_user);
+	    isCallingCab = false;
+	    SharedPreferences prefs = this.getSharedPreferences("com.bclin087.taxidemo", Context.MODE_PRIVATE);
+        api_url = prefs.getString("api_url", Constants.API_URL_BASE);
+        queue = Volley.newRequestQueue(this);
+		Bundle b = getIntent().getExtras();
+		mobilePhone = b.getString("mobile_phone");
+		showLoadingArea(false);
+		initTimer();
+	}
+	
+	void initTimer() {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if(isCallingCab && curTxnid.length() > 0) {
+					requestAPIFunction4();
+					timeout_counter++;
+				}
+			}
+		}, 1000, 5000);
+	}
+	
+	public void onCall(View view) {
+		if(!isCallingCab) {
+			timeout_counter = 0;
+			curTxnid = "";
+			requestAPIFunction3();
+			isCallingCab = true;
+			findViewById(R.id.buttonCall).setEnabled(false);
+			showLoadingArea(true);
+		}
+	}
+	
+	void reset() {
+		isCallingCab = false;
+		findViewById(R.id.buttonCall).setEnabled(true);
+		showLoadingArea(false);
+	}
+	
+	// API calls
+	void requestAPIFunction3() {
+			String url = String.format(Locale.TAIWAN, api_url+"?f=3&p1=%s&p2=%s",
+					mobilePhone,
+					((EditText)findViewById(R.id.editTextAddress)).getText().toString()
+					);
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest
+					(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							String txnid = response.optString("txnid");
+							if(txnid.length() > 0) {
+								curTxnid = txnid;
+							}
+							else {
+								showLoadingArea(false);
+							}
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.v("requestAPIFunction1", error.toString());
+						}
+					});
+			queue.add(jsObjRequest);
+	}
+	
+	void requestAPIFunction4() {
+		if(curTxnid.length() > 0) {
+			String url = String.format(Locale.TAIWAN, api_url+"?f=4&p1=%s&p2=%s",
+					mobilePhone,
+					curTxnid
+					);
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest
+					(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							int status = response.optInt("status");
+							double distance = response.optDouble("distance");
+							if(status > 0) {
+								alertPickuped(distance);
+								isCallingCab = false;
+								showLoadingArea(false);
+								findViewById(R.id.buttonCall).setEnabled(true);
+							}
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.v("requestAPIFunction1", error.toString());
+						}
+					});
+			queue.add(jsObjRequest);	
+		}
+}
+	
+	void alertPickuped(final double distance) {
+		String message = String.format(Locale.TAIWAN, getResources().getString(R.string.found),distance);
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+	}
+	
+	void showLoadingArea(boolean on) {
+		findViewById(R.id.progressBar1).setVisibility(on?View.VISIBLE:View.GONE);
+		findViewById(R.id.textViewStatus).setVisibility(on?View.VISIBLE:View.GONE);
+
+	}
+}

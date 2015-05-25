@@ -1,0 +1,202 @@
+package com.bclin087.taxidemo;
+
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class DriverActivity extends Activity {
+	String	driverId;			// 駕駛ID, 為demo方便直接使用手機號碼
+	Location currentLocation;	// 目前GPS坐標
+	boolean isOnDuty;			// 是否已經接客或等待回應中
+	String	curTxnid;			// 目前接客的 transaction ID
+	RequestQueue queue;			// http request queue
+	Handler handler = new Handler();
+	String api_url;
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_driver);
+		isOnDuty = false;
+		queue = Volley.newRequestQueue(this);
+		Bundle b = getIntent().getExtras();
+		driverId = b.getString("driver_id");
+		showUserInfoArea(false);
+		initLocationServices();
+		initTimer();
+	}
+
+	void initLocationServices() {
+		// Acquire a reference to the system Location Manager
+		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+		// Define a listener that responds to location updates
+		LocationListener locationListener = new LocationListener() {
+			public void onLocationChanged(Location location) {
+				// Called when a new location is found by the network location provider.
+				locationUpdated(location);
+			}
+
+			public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+			public void onProviderEnabled(String provider) {}
+
+			public void onProviderDisabled(String provider) {}
+		};
+
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		// get last known location
+		locationUpdated(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+		locationUpdated(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+	}
+
+	void locationUpdated(Location location) {
+		if(location != null) {
+			currentLocation = location;
+			((TextView)findViewById(R.id.textViewLocation)).setText(String.format("%f, %f", currentLocation.getLatitude(),currentLocation.getLongitude()));
+		}
+	}
+
+	// request API function 1 in every 5 second  
+	void initTimer() {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if(!isOnDuty)
+					requestAPIFunction1();
+			}
+		}, 1000, 5000);
+	}
+
+	// pickup button pressed
+	public void onPickup(View view) {
+		if(!isOnDuty) {
+			isOnDuty = true;
+			findViewById(R.id.buttonPickUp).setEnabled(false);
+			requestAPIFunction2();
+		}
+		else {
+			
+		}
+	}
+	
+	// API calls
+	void requestAPIFunction1() {
+		if(currentLocation != null) {
+			String url = String.format(Locale.TAIWAN, Constants.API_URL_BASE+"?f=1&p1=%s&p2=%f&p3=%f",
+					driverId,
+					currentLocation.getLatitude(),
+					currentLocation.getLongitude()
+					);
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest
+					(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							Log.v("requestAPIFunction1", response.toString());
+							String txnid = response.optString("txnid");
+							String address = response.optString("address");
+							// 有客人, 顯示資訊
+							if(txnid.length() > 0) {
+								TextView tvAddress = (TextView)findViewById(R.id.textViewAddress);
+								tvAddress.setText(address);
+								curTxnid = txnid;
+								showUserInfoArea(true);
+							}
+							// 沒客人 隱藏資訊
+							else {
+								showUserInfoArea(false);
+							}
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.v("requestAPIFunction1", error.toString());
+							showUserInfoArea(false);
+						}
+					});
+			queue.add(jsObjRequest);
+		}
+	}
+
+	void requestAPIFunction2() {
+		if(currentLocation != null) {
+			String url = String.format(Locale.TAIWAN, Constants.API_URL_BASE+"?f=2&p1=%s&p2=%s&p3=%f&p4=%f",
+					driverId,
+					curTxnid,
+					currentLocation.getLatitude(),
+					currentLocation.getLongitude()
+					);
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest
+					(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							boolean result = response.optBoolean("result", false);
+							// 接到
+							if(result) {
+								
+							}
+							// 沒接到
+							else {
+								isOnDuty = false;
+								showUserInfoArea(false);
+							}
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.v("requestAPIFunction1", error.toString());
+							showUserInfoArea(false);
+						}
+					});
+			queue.add(jsObjRequest);
+		}
+	}
+	
+	// UI
+	void showUserInfoArea(boolean on) {
+		if(on) {
+			findViewById(R.id.textViewAlertLabel).setVisibility(View.VISIBLE);
+			findViewById(R.id.textViewAddress).setVisibility(View.VISIBLE);
+			findViewById(R.id.buttonPickUp).setVisibility(View.VISIBLE);
+		}
+		else {
+			findViewById(R.id.textViewAlertLabel).setVisibility(View.INVISIBLE);
+			findViewById(R.id.textViewAddress).setVisibility(View.INVISIBLE);
+			findViewById(R.id.buttonPickUp).setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	void alertGotBusiness() {
+		Toast.makeText(this, getResources().getString(R.string.got_business), Toast.LENGTH_LONG).show();
+		((TextView) findViewById(R.id.textViewStatus)).setText(R.string.pickingup);
+	}
+}

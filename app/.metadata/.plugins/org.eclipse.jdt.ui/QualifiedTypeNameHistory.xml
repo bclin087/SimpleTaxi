@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.R.layout"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="android.location.LocationManager"/>
+<fullyQualifiedTypeName name="android.location.LocationListener"/>
+<fullyQualifiedTypeName name="android.location.Location"/>
+<fullyQualifiedTypeName name="java.util.Timer"/>
+<fullyQualifiedTypeName name="java.util.TimerTask"/>
+<fullyQualifiedTypeName name="com.android.volley.RequestQueue"/>
+<fullyQualifiedTypeName name="com.android.volley.toolbox.Volley"/>
+<fullyQualifiedTypeName name="com.android.volley.toolbox.JsonObjectRequest"/>
+<fullyQualifiedTypeName name="com.android.volley.Request"/>
+<fullyQualifiedTypeName name="com.android.volley.Response"/>
+<fullyQualifiedTypeName name="org.json.JSONObject"/>
+<fullyQualifiedTypeName name="com.android.volley.VolleyError"/>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.MainActivity"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.DriverActivity"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.Constants"/>
+<fullyQualifiedTypeName name="android.view.View"/>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.R.id"/>
+<fullyQualifiedTypeName name="android.widget.EditText"/>
+<fullyQualifiedTypeName name="android.widget.Toast"/>
+<fullyQualifiedTypeName name="java.util.Locale"/>
+<fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.UserActivity"/>
+<fullyQualifiedTypeName name="java.net.URLEncoder"/>
+<fullyQualifiedTypeName name="com.bclin087.taxidemo.R.string"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,29 @@
+package com.bclin087.taxidemo;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+    
+    public void login_driver(View view) {
+    	Intent intent = new Intent(MainActivity.this, DriverActivity.class);
+    	Bundle b = new Bundle();
+    	b.putString("driver_id", ); //Your id
+    	intent.putExtras(b); //Put your id to your next Intent
+    	startActivity(intent);
+    }
+    
+    public void login_user(View view) {
+    	this.startActivity(new Intent(this, UserActivity.class));
+    }
+}

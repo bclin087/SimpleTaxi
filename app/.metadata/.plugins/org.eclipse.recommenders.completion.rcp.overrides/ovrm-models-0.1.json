@@ -1,0 +1,7 @@
+{
+  "/Users/bclin087/Documents/android-sdk-macosx/platforms/android-20/android.jar": {
+    "location": "/Users/bclin087/Documents/android-sdk-macosx/platforms/android-20/android.jar",
+    "status": "UNRESOLVED",
+    "error": "No call model found for \u0027/Users/bclin087/Documents/android-sdk-macosx/platforms/android-20/android.jar\u0027. Neither fingerprint \u0027066aafa1a95681f4ff7280f162157ffeb2093e84\u0027 nor symbolic name \u0027android\u0027 are known."
+  }
+}

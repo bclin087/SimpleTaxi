@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+/Users/bclin087/Desktop/Fred/taxi_demo/app/.metadata/.plugins/org.eclipse.jdt.core
+1270315800.index
+3593542123.index
+1670108835.index

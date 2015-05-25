@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TaxiDemo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="mobile">手機號碼：</string>
+    <string name="iamdriver">我是司機</string>
+    <string name="iamuser">我是乘客</string>
+    <string name="input_mobile">請輸入行動電話</string>
+    <string name="location">坐標位置：</string>
+    <string name="status">目前狀態：</string>
+    <string name="waiting">等客中</string>
+    <string name="unknown">未知</string>
+    <string name="user_alert">您附近有乘客叫車，地址資訊：</string>
+    <string name="pickup">接</string>
+    <string name="pickingup">載客中</string>
+    <string name="server_url">API URl：</string>
+    <string name="got_business">接單成功！</string>
+
+</resources>
